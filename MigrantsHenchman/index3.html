@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MigrantsHenchman - Empowering India's Migrant Workforce</title>
+    
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Define theme colors and fonts */
+        :root {
+            --bg-dark: #0d1117;
+            --bg-light: #161b22;
+            --primary: #58a6ff;
+            --secondary: #1f6feb;
+            --accent-pink: #db61a2;
+            --accent-green: #3fb950;
+            --text-light: #e6edf3;
+            --text-dark: #7d8590;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            scroll-behavior: smooth;
+        }
+
+        /* Canvas for background particle animation */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Custom gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism effect for cards */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(88, 166, 255, 0.2);
+        }
+
+        /* Animation for elements fading in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: var(--text-light);
+            box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(88, 166, 255, 0.5);
+        }
+
+        /* Image hover effects */
+        .solution-image {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .solution-image:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Language selector styling */
+        .language-selector {
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid rgba(107, 114, 128, 0.3);
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        .language-selector:hover {
+            background: rgba(55, 65, 81, 0.9);
+            border-color: var(--primary);
+        }
+        .language-selector:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="w-full">
+
+    <!-- Background Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/50 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- New Minimalist Logo -->
+            <a href="#" class="flex items-center space-x-3" aria-label="Home">
+                <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/6fc8fda8-815d-49ed-af51-122e7e30f568.png" 
+                     alt="MigrantsHenchman Logo" 
+                     class="w-12 h-12 transition-transform hover:scale-110" />
+                <span class="text-2xl font-bold gradient-text">MigrantsHenchman</span>
+            </a>
+
+            <nav class="hidden md:flex space-x-8">
+                <a href="#problem" class="text-gray-300 hover:text-white transition">The Problem</a>
+                <a href="#solution" class="text-gray-300 hover:text-white transition">Solution</a>
+                <a href="#features" class="text-gray-300 hover:text-white transition">Features</a>
+                <a href="#contact-embedded" class="text-gray-300 hover:text-white transition">Contact</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <!-- Language Selector -->
+                <div class="relative inline-block text-left">
+                    <select aria-label="Language selector" 
+                            class="language-selector text-sm rounded-md px-3 py-2 cursor-pointer focus:outline-none">
+                        <option value="en">EN</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="te">తెలుగు</option>
+                    </select>
+                </div>
+                <a href="#" class="btn btn-primary hidden md:inline-block">Get the App</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center px-6">
+            <div class="max-w-4xl">
+                <h2 class="text-5xl md:text-7xl font-black mb-4 leading-tight fade-in">Empowering India's<br><span class="gradient-text">Migrant Workforce</span></h2>
+                <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto fade-in" style="transition-delay: 200ms;">A unified digital identity for seamless access to jobs, services, and support. Carry your life and skills in your pocket, securely and simply.</p>
+                <a href="#solution" class="btn btn-primary text-lg fade-in" style="transition-delay: 400ms;">Discover How</a>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="py-20 px-6">
+            <div class="container mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-2">The Silent Struggle</h3>
+                <p class="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">Millions are locked out of opportunities due to lost documents, endless paperwork, and language barriers.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="glass-card p-8 rounded-xl fade-in"><h4 class="text-xl font-bold mb-2">Lost Documents</h4><p class="text-gray-400">Critical IDs and skill certificates are easily lost or damaged during frequent moves.</p></div>
+                    <div class="glass-card p-8 rounded-xl fade-in" style="transition-delay: 150ms;"><h4 class="text-xl font-bold mb-2">Endless Paperwork</h4><p class="text-gray-400">Workers fill out the same forms repeatedly for jobs, housing, and government aid.</p></div>
+                    <div class="glass-card p-8 rounded-xl fade-in" style="transition-delay: 300ms;"><h4 class="text-xl font-bold mb-2">Language Barriers</h4><p class="text-gray-400">Inability to understand local languages prevents access to vital information and services.</p></div>
+                    <div class="glass-card p-8 rounded-xl fade-in" style="transition-delay: 450ms;"><h4 class="text-xl font-bold mb-2">No Support Network</h4><p class="text-gray-400">Isolation in new cities makes it hard to find trusted help, jobs, or community support.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section with Digital ID Image -->
+        <section id="solution" class="py-20 px-6 bg-gray-900/50">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-12 fade-in">
+                    <div class="flex-shrink-0">
+                        <img src="https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/347c011a-75bf-4193-948e-23cc01f61bbd.png" 
+                             alt="Digital ID card with QR code and migrant worker icon showcasing MigrantsHenchman features" 
+                             class="solution-image max-w-xs w-full rounded-xl shadow-2xl border border-gray-600/30" />
+                    </div>
+                    <div class="flex-1 max-w-2xl">
+                        <h3 class="text-4xl md:text-5xl font-bold mb-6">Meet <span class="gradient-text">MigrantsHenchman</span></h3>
+                        <p class="text-lg md:text-xl text-gray-300 mb-8">A revolutionary app that puts power back in your hands. We provide a secure, portable digital locker for your identity, skills, and documents, combined with an AI assistant that speaks your language.</p>
+                        <ul class="space-y-6">
+                            <li class="flex items-start">
+                                <span class="text-green-400 mr-4 mt-1 text-xl">✓</span>
+                                <div>
+                                    <strong class="text-white text-lg">One Digital Identity:</strong>
+                                    <span class="text-gray-300 block mt-1">All your documents, verified and accessible anytime.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-400 mr-4 mt-1 text-xl">✓</span>
+                                <div>
+                                    <strong class="text-white text-lg">AI-Powered Assistance:</strong>
+                                    <span class="text-gray-300 block mt-1">Get guidance on forms and jobs in your native language.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-400 mr-4 mt-1 text-xl">✓</span>
+                                <div>
+                                    <strong class="text-white text-lg">Instant Access:</strong>
+                                    <span class="text-gray-300 block mt-1">Use your phone or Capsule Card for quick onboarding.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20 px-6">
+            <div class="container mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-12">Get Started in 3 Easy Steps</h3>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <!-- Step 1 -->
+                    <div class="fade-in">
+                        <div class="p-6 bg-blue-500/10 rounded-full inline-block mb-4 border-2 border-blue-500">
+                           <svg class="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Download & Register</h4>
+                        <p class="text-gray-400">Get the app and create your secure profile in minutes.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="fade-in" style="transition-delay: 200ms;">
+                        <div class="p-6 bg-pink-500/10 rounded-full inline-block mb-4 border-2 border-pink-500">
+                           <svg class="w-10 h-10 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l-2.293-2.293a1 1 0 010-1.414l7-7a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0L10 21z"></path></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Upload Your Documents</h4>
+                        <p class="text-gray-400">Scan and organize your IDs, certificates, and skills securely.</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="fade-in" style="transition-delay: 400ms;">
+                        <div class="p-6 bg-green-500/10 rounded-full inline-block mb-4 border-2 border-green-500">
+                           <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2">Access Services</h4>
+                        <p class="text-gray-400">Use your digital profile to apply for jobs and access support instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 px-6 bg-gray-900/50">
+            <div class="container mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-12">Features Designed for You</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rounded-xl text-left fade-in"><h4 class="text-2xl font-bold mb-3 gradient-text">AI Helper Bot</h4><p class="text-gray-300">Your personal assistant. Ask questions, get help with paperwork, and find job matches, all in your own language.</p></div>
+                    <div class="glass-card p-8 rounded-xl text-left fade-in" style="transition-delay: 150ms;"><h4 class="text-2xl font-bold mb-3 gradient-text">AI Translator</h4><p class="text-gray-300">Instantly translate forms, public notices, and messages. Point your camera at any text and understand it immediately.</p></div>
+                    <div class="glass-card p-8 rounded-xl text-left fade-in" style="transition-delay: 300ms;"><h4 class="text-2xl font-bold mb-3 gradient-text">Document & Skill Hub</h4><p class="text-gray-300">Securely scan, upload, and organize your Aadhaar, work history, and skill certificates. Build a trusted professional profile.</p></div>
+                    <div class="glass-card p-8 rounded-xl text-left fade-in" style="transition-delay: 450ms;"><h4 class="text-2xl font-bold mb-3 gradient-text">Capsule Card (QR/NFC)</h4><p class="text-gray-300">A smart card for those without a smartphone. One tap is all it takes for verification at workplaces, hostels, or ration shops.</p></div>
+                    <div class="glass-card p-8 rounded-xl text-left fade-in" style="transition-delay: 600ms;"><h4 class="text-2xl font-bold mb-3 gradient-text">Local Alerts</h4><p class="text-gray-300">Receive location-based alerts for job openings, government schemes, and emergency information in your preferred language.</p></div>
+                    <div class="glass-card p-8 rounded-xl text-left fade-in" style="transition-delay: 750ms;"><h4 class="text-2xl font-bold mb-3 gradient-text">Community Map</h4><p class="text-gray-300">Find and connect with other workers from your home region. Build a support network and share valuable information.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial Section (Embedded) -->
+        <section id="testimonials-embedded" class="py-12 px-6">
+            <div class="glass-card max-w-4xl mx-auto p-8 rounded-xl fade-in">
+                <h3 class="text-3xl font-bold mb-8 text-center text-white">What Migrants Say</h3>
+                <blockquote class="italic text-gray-300 text-xl text-center max-w-3xl mx-auto p-6 border border-gray-700 rounded-lg shadow-lg">
+                    "I found work in two days, and they accepted my Capsule Card instantly!"
+                    <footer class="mt-4 text-green-400 font-semibold text-lg">– Ramesh, carpenter</footer>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- Contact Form Section (Embedded) -->
+        <section id="contact-embedded" class="py-16 px-6">
+            <div class="glass-card max-w-4xl mx-auto p-8 rounded-xl fade-in">
+                <h3 class="text-3xl font-bold mb-6 text-center text-white">Get in Touch</h3>
+                <p class="text-gray-300 text-center mb-8 max-w-md mx-auto">Have questions, partnership ideas, or want early access? Drop us a note!</p>
+                <form name="contact" netlify class="max-w-lg mx-auto space-y-6">
+                    <input type="text" name="name" aria-label="Your Name" placeholder="Your Name" required 
+                           class="w-full p-4 rounded-md bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                    <input type="email" name="email" aria-label="Email" placeholder="Email" required 
+                           class="w-full p-4 rounded-md bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                    <textarea name="message" aria-label="Message" placeholder="Message" rows="6" required 
+                              class="w-full p-4 rounded-md bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"></textarea>
+                    <button type="submit" class="btn btn-primary w-full font-semibold text-lg py-4" aria-label="Send message">Send Message</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 px-6">
+        <div class="container mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-4">Ready to Change the Future?</h3>
+            <p class="text-gray-400 mb-8">Download MigrantsHenchman today and take the first step towards a more secure and empowered life.</p>
+            <a href="#" class="btn btn-primary text-lg">Download Now</a>
+            <div class="mt-10 text-gray-500">
+                <p>&copy; 2025 EntangleX. All rights reserved.</p>
+                <p>A solution for a better India.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Particle Animation Script ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const numParticles = 70;
+        const particleColors = ['#58a6ff', '#1f6feb', '#db61a2', '#3fb950'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() * 1 - 0.5) * 0.5;
+                this.speedY = (Math.random() * 1 - 0.5) * 0.5;
+                this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+        
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = Math.sqrt(
+                        (particles[a].x - particles[b].x) * (particles[a].x - particles[b].x) +
+                        (particles[a].y - particles[b].y) * (particles[a].y - particles[b].y)
+                    );
+                    if (distance < 100) {
+                        opacityValue = 1 - (distance / 100);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacityValue * 0.2})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // --- Scroll Animation Script ---
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+        // Form submission feedback
+        document.querySelector('form[name="contact"]').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            // Simulate form submission (replace with actual submission logic)
+            setTimeout(() => {
+                button.textContent = 'Message Sent!';
+                button.style.background = 'linear-gradient(90deg, #3fb950, #58a6ff)';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+
+        // Language selector functionality (placeholder)
+        document.querySelector('.language-selector').addEventListener('change', function(e) {
+            console.log('Language selected:', e.target.value);
+            // Add your language switching logic here
+        });
+    </script>
+
+</body>
+</html>
